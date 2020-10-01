@@ -9,9 +9,11 @@ soup = BeautifulSoup(r.text,"html.parser")
 #print(soup)
 
 #soup.find_all("tbody")
-test = soup.find_all("tr",class_="player_count_row")
-for element in test:
-    toto = element.text
-    print(toto)
+game_activities = soup.find_all("tr",class_="player_count_row")
+for game_activity in game_activities:
+    game_activity = game_activity.text
+    print(game_activity)
 
-print(len(toto))
+
+steam_player = soup.find("span", class_="statsTopHi").text
+print(steam_player)
