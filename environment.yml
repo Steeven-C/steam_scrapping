@@ -1,0 +1,9 @@
+name: fastapi
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - fastapi
+  - pymongo
+  - uvicorn
+  - dnspython
