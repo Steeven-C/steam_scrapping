@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 class Game(BaseModel):
-    game_name: str
+    name: str
     evaluation: str
     
 

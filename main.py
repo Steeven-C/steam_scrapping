@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from pymongo import MongoClient
 import uvicorn
 from bson.objectid import ObjectId
 from typing import List, Optional
 import psycopg2
 from game_class import Game
+
 
 app = FastAPI()
 
@@ -17,6 +17,9 @@ try:
                                   host = "ec2-34-253-148-186.eu-west-1.compute.amazonaws.com",
                                   port = "5432",
                                   database = "d6lroer2tiaago")
+                                              
+    
+    connection.autocommit = True                            
     cursor = connection.cursor()
     # Print PostgreSQL Connection properties
     print ( connection.get_dsn_parameters(),"\n")
@@ -38,15 +41,15 @@ async def root():
 
 
 
+#post test qui marche
 @app.post("/games")
-async def create_game(game: Game):
-    game = Game()
-    query = f"INSERT INTO game_tests VALUES {game._id}, {game.game_name}, {game.evaluation}"
-    connection.autocommit = True
-    cursor = connection.cursor()
-    cursor.execute(query)
-    return {"game_id": Game.id}
-    
+    async def create_game(game: Game):
+        
+        game = game.__dict__
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO game_tests (game_name, evaluation) VALUES ( %s, %s)", ( game['name'], game['evaluation']))
+        return game['name']
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
