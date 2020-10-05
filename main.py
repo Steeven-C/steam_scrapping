@@ -4,8 +4,11 @@ import uvicorn
 from bson.objectid import ObjectId
 from typing import List, Optional
 import psycopg2
+from game_class import Game
 
 app = FastAPI()
+
+# Connection a la base Postgre distante
 
 
 try:
@@ -27,11 +30,25 @@ except (Exception, psycopg2.Error) as error :
     print ("Error while connecting to PostgreSQL", error)
 
 
+#test API
+
+@app.get("/")
+async def root():
+    return {"message": "Hello Toto tata"}
+
+
+
 @app.post("/games")
-async def create_student(game: Game):
-    student_id = str(COLLECTION_STUDENTS.insert_one(student.dict()).inserted_id)
-    return {"student_id": student_id}
+async def create_game(game: Game):
+    game = Game()
+    query = f"INSERT INTO game_tests VALUES {game._id}, {game.game_name}, {game.evaluation}"
+    connection.autocommit = True
+    cursor = connection.cursor()
+    cursor.execute(query)
+    return {"game_id": Game.id}
+    
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
