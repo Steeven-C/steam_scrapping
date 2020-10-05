@@ -61,7 +61,8 @@ def create_games():
         with connection.cursor() as cursor : 
             cursor.execute("""CREATE TABLE IF NOT EXISTS games (
                 id SERIAL PRIMARY KEY,
-                game TEXT               
+                game_name TEXT,
+                evaluation TEXT
             );""") 
 
 def create_player_activity():
@@ -90,3 +91,22 @@ def create_game_genre():
                 game_id INT REFERENCES games(id),
                 genre_id INT REFERENCES genres(id)
             );""")
+
+def create_steam_user():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("""CREATE TABLE IF NOT EXISTS steam_users(
+            id SERIAL PRIMARY KEY,
+            date DATE,
+            players_pike INT
+            );""")
+
+def create_game_test():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("""CREATE TABLE IF NOT EXISTS game_tests(
+                id SERIAL PRIMARY KEY,
+                game_name TEXT,
+                evaluation TEXT
+            );""")
+
